@@ -1,0 +1,37 @@
+version: '3.8'  # Version du format compose
+
+services:
+  backend:
+    build: ./BackAPI/simple-api-student-main/
+    container_name: app3tiers-backend-1
+    ports:
+      - "8080:8080"  # Mappe le port 8080 de l'hôte vers le port 8080 du conteneur
+    networks:
+      - app-network  # Nom du réseau à utiliser
+    depends_on:
+      - database  # Indique que le service backend dépend du service database
+
+  database:
+    build: ./db/
+    container_name: app3tiers-database-1  # Correction du nom de la clé
+    networks:
+      - app-network  # Utilise le même réseau
+    environment:  # Définit les variables d'environnement sous forme de dictionnaire
+      POSTGRES_DB: db  # Remplace par le nom de ta base de données
+      POSTGRES_USER: usr  # Remplace par le nom d'utilisateur
+      POSTGRES_PASSWORD: pwd  # Remplace par le mot de passe
+    ports:
+      - "5432:5432"  # Mappe le port 5432 de l'hôte vers le port 5432 du conteneur
+
+  httpd:
+    build: ./front/
+    container_name: app3tiers-httpd-1
+    ports:
+      - "80:80"  # Mappe le port 80 de l'hôte vers le port 80 du conteneur
+    networks:
+      - app-network  # Utilise le même réseau
+    depends_on:
+      - backend  # Indique que le service httpd dépend du service backend
+
+networks:
+  app-network: 

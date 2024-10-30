@@ -1,0 +1,22 @@
+spring:
+  jpa:
+    properties:
+      hibernate:
+        jdbc:
+          lob:
+            non_contextual_creation: true
+    generate-ddl: false
+    open-in-view: true
+  datasource:
+    url: jdbc:postgresql://app3tiers-database-1:5432/db  # Remplacez par le nom de ton conteneur et le nom de la DB
+    username: usr  # Le nom d'utilisateur que tu as défini
+    password: pwd  # Le mot de passe que tu as défini
+    driver-class-name: org.postgresql.Driver
+management:
+  server:
+    add-application-context-header: false
+  endpoints:
+    web:
+      exposure:
+        include: health,info,env,metrics,beans,configprops
+#name of the conterner = studentspp
